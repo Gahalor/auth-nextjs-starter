@@ -15,8 +15,14 @@ export async function GET(request:NextRequest){
             mesaaage: "User found",
             data: user
         })
-    } catch (error:any) {
-        return NextResponse.json({error: error.message}, {status: 400});
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("Error:", error.message); // Asegúrate de registrar el error para debugging
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        } else {
+            console.error("Error: Unknown error");
+            return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+        }
     }
 
 }

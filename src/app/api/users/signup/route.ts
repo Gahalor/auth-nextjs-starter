@@ -48,8 +48,13 @@ export async function POST(request: NextRequest){
         
 
 
-    } catch (error: any) {
-        return NextResponse.json({error: error.message}, {status: 500})
-
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("Signup error:", error.message); // Asegúrate de registrar el error para debugging
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        } else {
+            console.error("Signup error: Unknown error");
+            return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+        }
     }
 }

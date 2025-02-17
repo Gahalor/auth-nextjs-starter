@@ -13,8 +13,14 @@ export async function GET() {
         { httpOnly: true, expires: new Date(0) 
         });
         return response;
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error("Logout error:", error.message); // Asegúrate de registrar el error para debugging
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        } else {
+            console.error("Logout error: Unknown error");
+            return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
+        }
     }
         
     }
